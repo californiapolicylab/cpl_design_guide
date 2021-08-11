@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>CPL Figure Design Guide for R </title>
+
+<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="www/styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">CPL Design Guide</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="r_guide_for_figures.html">R Design Guide</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">CPL Figure Design Guide for R <img align="right" src="CPL_final_web.png" width=163 height=101></h1>
+
+</div>
+
+
+<pre class="r"><code>knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(message = FALSE)</code></pre>
+<div id="visualization-with-r-cpl" class="section level1">
+<h1>Visualization with R @ CPL</h1>
+<p>Hello R users! Visualization is made easy using the <code>cplthemes</code> package that was developed internally. Below are instructions for how to install it and after that are example graphics.</p>
+</div>
+<div id="installation" class="section level1">
+<h1>Installation</h1>
+<p>Below are instructions for installing and using <code>cplthemes</code>, the California Policy Lab’s R package for creating ggplot2 graphics according to the CPL style guide.</p>
+<p>If you are creating ggplot2 graphics off the VM you can install <code>cplthemes</code> using the devtools library:</p>
+<pre><code>install.packages(&quot;devtools&quot;)
+devtools::install_github(&quot;lmgibson/cplthemes&quot;)</code></pre>
+<p>If you are on the VM then you can install <code>cplthemes</code> via the following command:</p>
+<pre><code>install.packages(&quot;cplthemes&quot;, repos = &quot;file:////commons/Commons/code/r/repo_4.0)</code></pre>
+<p>After installing cplthemes you will then run the following at the top of each script:</p>
+<pre><code>library(ggplot2)
+library(cplthemes)
+
+cpl_set_theme()</code></pre>
+<p>The remaining sections provide customizable code templates for creating data visualizations using ggplot2 after setting the default theme to CPL’s theme. To see the code for each example click the <code>code</code> button to the top right of the graphic.</p>
+</div>
+<div id="bar-plots" class="section level1 tabset">
+<h1 class="tabset">Bar Plots</h1>
+<div id="bar-plot-with-labels" class="section level2">
+<h2>Bar Plot with Labels</h2>
+<pre class="r"><code>mtcars %&gt;%
+  count(cyl) %&gt;%
+  ggplot(mapping = aes(x = factor(cyl), y = n)) +
+  geom_col(width = 0.5) +
+  geom_text(mapping = aes(label = n), vjust = -0.5) +
+  scale_y_continuous(expand = expansion(mult = c(0.002, 0)),
+                     limits = c(0, 15)) +
+  labs(x = &quot;Cylinders&quot;,
+       y = NULL,
+       subtitle = &quot;Number of Cars&quot;) +
+  theme(plot.title.position = &quot;plot&quot;)</code></pre>
+<p><img src="r_guide_for_figures_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+</div>
+<div id="bar-plot-with-labels-horizontal" class="section level2">
+<h2>Bar Plot with Labels (Horizontal)</h2>
+<pre class="r"><code>mtcars %&gt;%
+  count(cyl) %&gt;%
+  ggplot(mapping = aes(x = factor(cyl), y = n)) +
+  geom_col(width = 0.5) +
+  geom_text(mapping = aes(label = n), hjust = -0.5) +
+  scale_y_continuous(expand = expansion(mult = c(0.002, 0)),
+                     limits = c(0, 15)) +
+  labs(x = NULL,
+       y = &quot;Cylinders&quot;,
+       subtitle = &quot;Number of Cars&quot;) +
+  coord_flip() +
+  theme(plot.title.position = &quot;plot&quot;)</code></pre>
+<p><img src="r_guide_for_figures_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+<div id="side-by-side-bar-plot" class="section level2">
+<h2>Side-by-Side Bar Plot</h2>
+<pre class="r"><code>mtcars %&gt;%
+  mutate(am = factor(am, labels = c(&quot;Automatic&quot;, &quot;Manual&quot;)),
+         cyl = factor(cyl)) %&gt;%
+  group_by(am) %&gt;%
+  count(cyl) %&gt;%
+  ggplot(mapping = aes(x = cyl, y = n, fill = am)) +
+  geom_col(width = 0.5, 
+           position = position_dodge(0.6)) +
+  geom_text(mapping = aes(label = n), 
+            vjust = -0.5, 
+            position = position_dodge(0.6)) +
+  scale_y_continuous(expand = expansion(mult = c(0.002, 0)),
+                     limits = c(0, 15)) +
+  labs(x = &quot;Cylinders&quot;,
+       y = NULL,
+       subtitle = &quot;Number of Cars&quot;) +
+  theme(plot.title.position = &quot;plot&quot;)</code></pre>
+<p><img src="r_guide_for_figures_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<!-- ## Stacked Bar Plot -->
+<!-- ```{r} -->
+<!-- mtcars %>% -->
+<!--   mutate(am = factor(am, labels = c("Automatic", "Manual")), -->
+<!--          cyl = factor(cyl)) %>%   -->
+<!--   group_by(am) %>% -->
+<!--   count(cyl) %>% -->
+<!--   group_by(cyl) %>% -->
+<!--   arrange(desc(am)) %>% -->
+<!--   mutate(label_height = cumsum(n)) %>% -->
+<!--   ggplot() + -->
+<!--   geom_col(mapping = aes(x = cyl, y = n, fill = am)) + -->
+<!--   geom_text(aes(x = cyl, y = label_height - 0.5, label = n, color = am), -->
+<!--             show.legend = FALSE) + -->
+<!--   scale_color_manual(values = c("white", "white")) + -->
+<!--   scale_y_continuous(expand = expansion(mult = c(0, 0)), -->
+<!--                      limits = c(0, 15)) + -->
+<!--   labs(x = "Cylinders", -->
+<!--        y = NULL, -->
+<!--        subtitle = "Number of Cars") + -->
+<!--   theme(plot.title.position = "plot") -->
+<!-- ``` -->
+</div>
+</div>
+<div id="line-plots" class="section level1 tabset">
+<h1 class="tabset">Line Plots</h1>
+<div id="basic-line-plot" class="section level2">
+<h2>Basic Line Plot</h2>
+<pre class="r"><code>economics %&gt;%
+  ggplot(mapping = aes(x = date, y = unemploy)) +
+  geom_line() +
+  scale_x_date(expand = expansion(mult = c(0.002, 0)), 
+               breaks = &quot;10 years&quot;,
+               limits = c(as.Date(&quot;1961-01-01&quot;),
+                          as.Date(&quot;2020-01-01&quot;)),
+               date_labels = &quot;%Y&quot;) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.002)), 
+                     breaks = 0:4 * 4000,
+                     limits = c(0, 16000),
+                     labels = scales::comma) +
+  labs(x = &quot;Year&quot;, 
+       y = NULL,
+       subtitle = &quot;Number of Persons Unemployed (1,000s)&quot;) +
+  theme(plot.title.position = &quot;plot&quot;)</code></pre>
+<p><img src="r_guide_for_figures_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="multivariate-line-plots" class="section level2">
+<h2>Multivariate Line Plots</h2>
+<pre class="r"><code>library(gapminder)
+
+gapminder %&gt;%
+  filter(country %in% c(&quot;Australia&quot;, &quot;Canada&quot;, &quot;New Zealand&quot;)) %&gt;%
+  mutate(country = factor(country, levels = c(&quot;Canada&quot;,
+                                              &quot;Australia&quot;, &quot;New Zealand&quot;))) %&gt;%
+  ggplot(aes(year, gdpPercap, color = country)) +
+  geom_line() +
+  scale_x_continuous(expand = expansion(mult = c(0.002, 0)), 
+                     breaks = c(1952 + 0:12 * 5), 
+                     limits = c(1952, 2007)) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.002)), 
+                     breaks = 0:8 * 5000,
+                     labels = scales::dollar, 
+                     limits = c(0, 40000)) +
+  labs(x = &quot;Year&quot;,
+       y = NULL,
+       subtitle = &quot;Per capita GDP (US dollars)&quot;) +
+  theme(plot.title.position = &quot;plot&quot;)</code></pre>
+<p><img src="r_guide_for_figures_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="multivariate-line-plots-with-labels" class="section level2">
+<h2>Multivariate Line Plots with Labels</h2>
+<pre class="r"><code>library(tidyverse)
+library(gapminder)
+library(ggrepel)
+
+gapminder %&gt;%
+  filter(country %in% c(&quot;Australia&quot;, &quot;Canada&quot;, &quot;New Zealand&quot;)) %&gt;%
+  mutate(country = factor(country, levels = c(&quot;Canada&quot;,
+                                              &quot;Australia&quot;, &quot;New Zealand&quot;))) %&gt;%
+  mutate(label = if_else(year == max(year), as.character(country), NA_character_)) %&gt;%
+  ggplot(aes(year, gdpPercap, color = country)) +
+  geom_line() +
+  geom_label_repel(aes(label = label),
+                   nudge_x = 4,
+                   nudge_y = -100,
+                   label.size = NA,
+                   na.rm = TRUE) +
+  scale_x_continuous(expand = expansion(mult = c(0.002, 0)), 
+                     breaks = c(1952 + 0:12 * 5), 
+                     limits = c(1952, 2020)) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.002)), 
+                     breaks = 0:8 * 5000,
+                     labels = scales::dollar, 
+                     limits = c(0, 40000)) +
+  labs(x = &quot;Year&quot;,
+       y = NULL,
+       subtitle = &quot;Per capita GDP (US dollars)&quot;) +
+  theme(plot.title.position = &quot;plot&quot;,
+        legend.position = &quot;none&quot;)</code></pre>
+<p><img src="r_guide_for_figures_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+</div>
+<div id="scatter-plots" class="section level1 tabset">
+<h1 class="tabset">Scatter Plots</h1>
+<div id="bivariate-scatter-plot" class="section level2">
+<h2>Bivariate Scatter Plot</h2>
+<pre class="r"><code>mtcars %&gt;%
+  ggplot(mapping = aes(x = wt, y = mpg)) +
+  geom_point() +
+  scale_x_continuous(expand = expansion(mult = c(0.002, 0)), 
+                     limits = c(0, 6),
+                     breaks = 0:6) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.002)), 
+                     limits = c(0, 40),
+                     breaks = 0:8 * 5) +
+  labs(x = &quot;Weight (thousands of pounds)&quot;,
+       y = NULL,
+       subtitle = &quot;City Miles Per Gallon (MPG)&quot;) +
+  theme(plot.title.position = &quot;plot&quot;)</code></pre>
+<p><img src="r_guide_for_figures_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="multivariate-scatter-plot" class="section level2">
+<h2>Multivariate Scatter Plot</h2>
+<pre class="r"><code>mtcars %&gt;%
+  mutate(cyl = paste(cyl, &quot;cylinders&quot;)) %&gt;%
+  ggplot(aes(x = wt, y = mpg, color = cyl)) +
+  geom_point() +
+  scale_x_continuous(expand = expansion(mult = c(0.002, 0)), 
+                     limits = c(0, 6),
+                     breaks = 0:6) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.002)), 
+                     limits = c(0, 40),
+                     breaks = 0:8 * 5) +
+  labs(x = &quot;Weight (thousands of pounds)&quot;,
+       y = NULL,
+       subtitle = &quot;City Miles Per Gallon (MPG)&quot;) +
+  theme(plot.title.position = &quot;plot&quot;)</code></pre>
+<p><img src="r_guide_for_figures_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+</div>
+<div id="univariate-plots" class="section level1 tabset">
+<h1 class="tabset">Univariate Plots</h1>
+<div id="histogram" class="section level2">
+<h2>Histogram</h2>
+<pre class="r"><code>ggplot(data = diamonds, mapping = aes(x = depth)) + 
+  geom_histogram(bins = 100) +
+  scale_x_continuous(expand = expansion(mult = c(0.002, 0)), 
+                     limits = c(0, 100)) +  
+  scale_y_continuous(expand = expansion(mult = c(0, 0.2)), labels = scales::comma) +
+  labs(x = &quot;Depth&quot;,
+       y = &quot;Count&quot;)</code></pre>
+<p><img src="r_guide_for_figures_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+<div id="boxplot" class="section level2">
+<h2>Boxplot</h2>
+<pre class="r"><code>InsectSprays %&gt;%
+  ggplot(mapping =  aes(x = spray, y = count)) +
+  geom_boxplot() +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.2))) +
+  labs(x = &quot;Type of insect spray&quot;,
+       y = NULL,
+       subtitle = &quot;Number of dead insects &quot;) +
+  theme(plot.title.position = &quot;plot&quot;)</code></pre>
+<p><img src="r_guide_for_figures_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+<div id="kernel-density-plots" class="section level2">
+<h2>Kernel Density Plots</h2>
+<pre class="r"><code>diamonds %&gt;%
+  ggplot(mapping = aes(carat)) +
+  geom_density(color = NA) +
+  scale_x_continuous(expand = expansion(mult = c(0.002, 0)), 
+                     limits = c(0, NA)) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.2))) +
+  labs(x = &quot;Carat&quot;,
+       y = &quot;Density&quot;)</code></pre>
+<p><img src="r_guide_for_figures_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+</div>
+<div id="saving-your-work" class="section level1">
+<h1>Saving Your Work</h1>
+<p>Use <code>cplthemes::cpl_save()</code> after initiating the cpl theme to save your plots.</p>
+<pre><code>cpl_save(&quot;filename&quot;)</code></pre>
+<p><code>cpl_save()</code> will save your graphic as a pdf using CPL defaults. If you want to use custom settings then use <code>ggsave()</code>.</p>
+</div>
+<div id="cpl-color-palettes" class="section level1 tabset">
+<h1 class="tabset">CPL Color Palettes</h1>
+<p>Below are color schema for CPL’s Policy Briefs, UCLA, and Berkeley. The color palette can be changed via the <code>color_schema</code> parameter in the <code>setThemeCPL()</code> function. <code>color_schema</code> can take the values of “brief”, “ucla”, “ucb” which will adjust the color palette to match the policy brief, UCLA, or UC Berkeley color schemes, respectively.</p>
+<div id="policy-brief" class="section level2">
+<h2>Policy Brief</h2>
+<pre class="r"><code>colorschema &lt;- tibble(
+    Element = c(&quot;First Element&quot;,&quot;Second Element&quot;,&quot;Third Element&quot;,&quot;Fourth Element&quot;,
+                &quot;Fifth Element&quot;,&quot;Sixth Element&quot;,&quot;Seventh Element&quot;,&quot;Eighth Element&quot;),
+    Color = c(&quot;Blue&quot;, &quot;Orange&quot;, &quot;Light Blue&quot;, &quot;Green&quot;, &quot;Blue Grey&quot;, &quot;Red&quot;,
+              &quot;Darker Blue&quot;, &quot;Dark Grey&quot;),
+    RGB = c(&quot;38, 145, 208&quot;,&quot;246, 139, 31&quot;,&quot;72, 197, 219&quot;,&quot;153, 198, 66&quot;,
+                 &quot;128, 155, 178&quot;,&quot;237, 59, 19&quot;,&quot;45, 49, 114&quot;,&quot;109, 110, 113&quot;),
+    Hex = c(&quot;#2691d1&quot;, &quot;#f68b1f&quot;, &quot;#48c5db&quot;, &quot;#99C642&quot;, &quot;#809bb2&quot;, &quot;#ed3b13&quot;,
+              &quot;#2D3172&quot;, &quot;#6D6E67&quot;)
+    )
+
+knitr::kable(colorschema)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Element</th>
+<th align="left">Color</th>
+<th align="left">RGB</th>
+<th align="left">Hex</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">First Element</td>
+<td align="left">Blue</td>
+<td align="left">38, 145, 208</td>
+<td align="left">#2691d1</td>
+</tr>
+<tr class="even">
+<td align="left">Second Element</td>
+<td align="left">Orange</td>
+<td align="left">246, 139, 31</td>
+<td align="left">#f68b1f</td>
+</tr>
+<tr class="odd">
+<td align="left">Third Element</td>
+<td align="left">Light Blue</td>
+<td align="left">72, 197, 219</td>
+<td align="left">#48c5db</td>
+</tr>
+<tr class="even">
+<td align="left">Fourth Element</td>
+<td align="left">Green</td>
+<td align="left">153, 198, 66</td>
+<td align="left">#99C642</td>
+</tr>
+<tr class="odd">
+<td align="left">Fifth Element</td>
+<td align="left">Blue Grey</td>
+<td align="left">128, 155, 178</td>
+<td align="left">#809bb2</td>
+</tr>
+<tr class="even">
+<td align="left">Sixth Element</td>
+<td align="left">Red</td>
+<td align="left">237, 59, 19</td>
+<td align="left">#ed3b13</td>
+</tr>
+<tr class="odd">
+<td align="left">Seventh Element</td>
+<td align="left">Darker Blue</td>
+<td align="left">45, 49, 114</td>
+<td align="left">#2D3172</td>
+</tr>
+<tr class="even">
+<td align="left">Eighth Element</td>
+<td align="left">Dark Grey</td>
+<td align="left">109, 110, 113</td>
+<td align="left">#6D6E67</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="ucla" class="section level2">
+<h2>UCLA</h2>
+<pre class="r"><code>colorschema &lt;- tibble(
+    Element = c(&quot;First Element&quot;,&quot;Second Element&quot;,&quot;Third Element&quot;,&quot;Fourth Element&quot;,
+                &quot;Fifth Element&quot;,&quot;Sixth Element&quot;),
+    Color = c(&quot;Darker Blue&quot;, &quot;Darkest Gold&quot;, &quot;Lighter Blue&quot;, &quot;Darkest Blue&quot;, 
+              &quot;Lightest Blue&quot;, &quot;Dark Grey&quot;),
+    RGB_Code = c(&quot;0, 85, 135&quot;,&quot;255, 184, 28&quot;,&quot;139, 184, 232&quot;,&quot;0, 59, 92&quot;,
+                 &quot;195, 215, 238&quot;,&quot;109, 110, 113&quot;),
+    Hex = c(&quot;#015587&quot;, &quot;#FFB81C&quot;, &quot;#8BB8E8&quot;, &quot;#013B5C&quot;, &quot;#C3D7EE&quot;, &quot;#6D6E71&quot;)
+    )
+
+knitr::kable(colorschema)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Element</th>
+<th align="left">Color</th>
+<th align="left">RGB_Code</th>
+<th align="left">Hex</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">First Element</td>
+<td align="left">Darker Blue</td>
+<td align="left">0, 85, 135</td>
+<td align="left">#015587</td>
+</tr>
+<tr class="even">
+<td align="left">Second Element</td>
+<td align="left">Darkest Gold</td>
+<td align="left">255, 184, 28</td>
+<td align="left">#FFB81C</td>
+</tr>
+<tr class="odd">
+<td align="left">Third Element</td>
+<td align="left">Lighter Blue</td>
+<td align="left">139, 184, 232</td>
+<td align="left">#8BB8E8</td>
+</tr>
+<tr class="even">
+<td align="left">Fourth Element</td>
+<td align="left">Darkest Blue</td>
+<td align="left">0, 59, 92</td>
+<td align="left">#013B5C</td>
+</tr>
+<tr class="odd">
+<td align="left">Fifth Element</td>
+<td align="left">Lightest Blue</td>
+<td align="left">195, 215, 238</td>
+<td align="left">#C3D7EE</td>
+</tr>
+<tr class="even">
+<td align="left">Sixth Element</td>
+<td align="left">Dark Grey</td>
+<td align="left">109, 110, 113</td>
+<td align="left">#6D6E71</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="uc-berkeley" class="section level2">
+<h2>UC Berkeley</h2>
+<pre class="r"><code>colorschema &lt;- tibble(
+    Element = c(&quot;First Element&quot;,&quot;Second Element&quot;,&quot;Third Element&quot;,&quot;Fourth Element&quot;,
+                &quot;Fifth Element&quot;,&quot;Sixth Element&quot;),
+    Color = c(&quot;Founders Rock&quot;, &quot;California Gold&quot;, &quot;Lawrence&quot;, &quot;Berkeley Blue&quot;, 
+              &quot;Bay Fog&quot;, &quot;Web Grey&quot;),
+    RGB_Code = c(&quot;45, 99, 127&quot;,&quot;253, 181, 21&quot;,&quot;0, 176, 218&quot;,&quot;0, 50, 98&quot;,
+                 &quot;194, 185, 167&quot;,&quot;136, 136, 136&quot;),
+    Hex = c(&quot;#2D637F&quot;, &quot;#FDB515&quot;, &quot;#01B0DA&quot;, &quot;#013262&quot;, &quot;#C2B9A7&quot;, &quot;#888888&quot;)
+    )
+
+knitr::kable(colorschema)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Element</th>
+<th align="left">Color</th>
+<th align="left">RGB_Code</th>
+<th align="left">Hex</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">First Element</td>
+<td align="left">Founders Rock</td>
+<td align="left">45, 99, 127</td>
+<td align="left">#2D637F</td>
+</tr>
+<tr class="even">
+<td align="left">Second Element</td>
+<td align="left">California Gold</td>
+<td align="left">253, 181, 21</td>
+<td align="left">#FDB515</td>
+</tr>
+<tr class="odd">
+<td align="left">Third Element</td>
+<td align="left">Lawrence</td>
+<td align="left">0, 176, 218</td>
+<td align="left">#01B0DA</td>
+</tr>
+<tr class="even">
+<td align="left">Fourth Element</td>
+<td align="left">Berkeley Blue</td>
+<td align="left">0, 50, 98</td>
+<td align="left">#013262</td>
+</tr>
+<tr class="odd">
+<td align="left">Fifth Element</td>
+<td align="left">Bay Fog</td>
+<td align="left">194, 185, 167</td>
+<td align="left">#C2B9A7</td>
+</tr>
+<tr class="even">
+<td align="left">Sixth Element</td>
+<td align="left">Web Grey</td>
+<td align="left">136, 136, 136</td>
+<td align="left">#888888</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
