@@ -1,0 +1,9 @@
+name: "designGuide"
+output_dir: "docs"
+navbar:
+  title: "CPL Design Guide"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "R Design Guide"
+      href: r_guide_for_figures.html
