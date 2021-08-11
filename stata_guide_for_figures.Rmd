@@ -1,0 +1,5 @@
+---
+title: Stata Guide <img align="right" src="images/CPL_final_web.png" width=163 height=101>
+---
+
+Coming soon!

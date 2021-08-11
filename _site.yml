@@ -5,8 +5,10 @@ navbar:
   left:
     - text: "Home"
       href: index.html
-    - text: "R Design Guide"
+    - text: "R"
       href: r_guide_for_figures.html
+    - text: "Stata"
+      href: stata_guide_for_figures.html
 output:
     html_document:
         css: www/styles.css

@@ -1,5 +1,5 @@
 ---
-title: CPL Figure Design Guide for R <img align="right" src="CPL_final_web.png" width=163 height=101>
+title: CPL Figure Design Guide for R <img align="right" src="images/CPL_final_web.png" width=163 height=101>
 output:
     html_document:
         self_contained: true
