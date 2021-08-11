@@ -29,7 +29,11 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
@@ -216,7 +220,73 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
 
 
 
@@ -226,6 +296,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -261,6 +341,14 @@ $(document).ready(function () {
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">Stata Guide <img align="right" src="images/CPL_final_web.png" width=163 height=101></h1>
@@ -268,10 +356,794 @@ $(document).ready(function () {
 </div>
 
 
-<p>Coming soon!</p>
+<div id="setup-requirements" class="section level1">
+<h1>Setup Requirements</h1>
+<p><strong>Use CPL’s Stata Schemes and the correct font</strong></p>
+<p>Start your .do file with the following:</p>
+<pre><code>set scheme CPL_theme
+graph set window fontface &quot;Gill Sans Nova Book&quot;</code></pre>
+<p>CPL’s Stata schemes save you time by setting the default color palette and display options for figures. These can be manually adjusted if needed.</p>
+<p>There are three schemes: - CPL_theme uses the color palette of CPL’s policy briefs. This is your default scheme. - CPL_theme_Berkeley and CPL_theme_UCLA use university color palettes but are otherwise identical to CPL_theme</p>
+<p><strong>Scheme Installation</strong></p>
+<ul>
+<li>Schemes are saved in the Commons at: <code>\\COMMONS\commons\code\stata\00_cpl_theme\</code></li>
+<li>Copy these files to <code>C:\users\YOURUSERNAME\ado\plus\c</code> and Stata will recognize them when called</li>
+</ul>
+</div>
+<div id="saving-your-work" class="section level1">
+<h1>Saving Your Work</h1>
+<p>Use <code>graph export</code> to save your graphs.</p>
+<pre><code>graph export &quot;FILENAME.EXTENSION&quot;, replace</code></pre>
+<p>Graphs can be exported as:</p>
+<ul>
+<li>.pdf: Portable Document Format</li>
+<li>.png: Portable Network Graphics</li>
+<li>.jpg: JPEG</li>
+<li>.eps: Encapsulated PostScript (good for embedding in LaTeX docs)</li>
+</ul>
+<p>Additional image types supported, see <code>help graph export</code> for the full list.</p>
+</div>
+<div id="examples" class="section level1 tabset">
+<h1 class="tabset">Examples</h1>
+<p>This section provides nine customizable code templates for creating data visualizations with the twoway and graph bar functions in Stata.</p>
+<p>All examples saved as separate templates in <code>\\COMMONS\commons\code\stata\01_figure_guide\templates</code></p>
+<div id="time-series-with-legend" class="section level2">
+<h2>Time Series with Legend</h2>
+<p><strong>INSERT IMAGE HERE</strong></p>
+<p>Here’s how to set up your data to label lines directly instead of using a legend.</p>
+<ol style="list-style-type: decimal">
+<li><p>Sort your data by the variable that will be used as the x-axis.</p></li>
+<li><p>For each y-variable, create a new string variable. Leave every row of the new variable blank except for the last row. You will label the last row so that only the final “point” on your line graph will be labeled.</p></li>
+</ol>
+<pre><code>clear all
+set more off
+
+set scheme CPL_theme
+graph set window fontface &quot;Gill Sans Nova Book&quot;
+
+* Set root directory
+global rootdir &quot;\\COMMONS\commons\code\stata\01_figure_guide&quot;
+
+* Import raw data
+use &quot;$rootdir\data\figure_guide_data.dta&quot;, clear
+
+*sort on x-variable
+sort yearmonth
+
+* Create local for y variable
+local yvar &quot;Toyota Ford Chevy Fiat&quot;
+
+* Use the variable name as the label, and add to the last observation of each y-variable. 
+foreach var in `yvar&#39;{
+gen label_`var&#39; = &quot;`var&#39;&quot; if _n==_N
+}</code></pre>
+<p>Your data will now look like this:</p>
+<p><strong>INSERT IMAGE HERE</strong></p>
+<ol style="list-style-type: decimal">
+<li>Now graph the data using twoway connected instead of twoway line, setting msize(0) to remove the markers you’d normally see in a scatter plot, and using mlab() to label your y-variables.</li>
+</ol>
+<p>You may need to increase the right hand margin of your graph region to accommodate your labels by using graphregion(margin(r+#), or reposition your labels using the mlabposition() option with clock face positioning; eg 12 for above centered, 6 for centered below.</p>
+<pre><code>clear all
+set more off
+
+set scheme CPL_theme
+graph set window fontface &quot;Gill Sans Nova Book&quot;
+
+* Set root directory
+global rootdir &quot;\\COMMONS\commons\code\stata\01_figure_guide&quot;
+
+* Import raw data
+use &quot;$rootdir\data\figure_guide_data.dta&quot;, clear
+
+* sort on x-variable
+sort yearmonth
+
+* Create local for y variable
+local yvar &quot;Toyota Ford Chevy Fiat&quot;
+
+* Add a label to the last observation of each y-variable. 
+foreach var in `yvar&#39;{
+gen label_`var&#39; = &quot;`var&#39;&quot; if _n==_N
+}
+
+*Begin graphing
+
+#delimit ;
+twoway connected Toyota Ford Chevy Fiat yearmonth, 
+        
+        /*specify variable containing label for each Y variable in order*/
+        mlab(label_Toyota label_Ford label_Chevy label_Fiat) 
+        
+        /*set the size of the marker for each Y variable to zero*/ 
+        msize(0 0 0 0)                                                              
+    
+        /*increase right margin to accommodate labeling*/
+        graphregion(margin(r+7))    
+
+    /*add shading between lines for Toyota and Ford*/
+    || rarea Toyota Ford yearmonth in 2/20,                                         
+        color(navy%30) lwidth(0)                                                    
+
+    /*set y-axis value labels*/
+    ylabel(0(200)800, labsize(small))   
+
+    /*use subtitle in 11 o&#39;clock position for y axis title instead of repositioning ytitle*/
+    subtitle(&quot;Number of New Car Sales&quot;, position(11) margin(b+2 l-6) size(medsmall))                        
+        
+    /*set x-axis value labels*/
+    xlabel(624(2)645, format(%tm_NN/ccYY) labsize(small))   
+
+    /*set x-axis title*/                                    
+    xtitle(&quot;Month&quot;, margin(t+3 b-2)) 
+    
+    /*set graph title if in draft form, else add in destination document*/
+    title(&quot;{bf: FIGURE 2}: A Time Series Plot with Line Labels&quot;,                            
+        span position(11) size(medium)  margin(b+3 l+1))                        
+                
+    /*add figure note if in draft form, else add in destination document*/
+    note(&quot;Notes: Data were generated for demonstration purposes and range from January 2012 to September 2013.&quot;                         
+        &quot;N = `c(N)&#39;&quot;,                                               
+        size(small)                                                         
+        margin(t+2 l-6))            
+    ;                                                                   
+#delimit cr</code></pre>
+</div>
+<div id="scatter-plots" class="section level2">
+<h2>Scatter Plots</h2>
+<p><strong>INSERT IMAGE HERE</strong></p>
+<pre><code>clear all
+set more off
+
+set scheme CPL_theme
+graph set window fontface &quot;Gill Sans Nova Book&quot;
+
+* Set root directory
+global rootdir &quot;\\COMMONS\commons\code\stata\01_figure_guide&quot;
+
+* Import raw data
+use &quot;$rootdir\data\figure_guide_data.dta&quot;, clear
+
+#delimit ;
+/* initiate scatter plot with multiple Y variables listed before single X variable */
+twoway scatter Toyota Ford Chevy Fiat yearmonth
+    
+    /*add linear fit line */
+    || lfit Toyota yearmonth, lcolor(&quot;38 145 208&quot;) 
+    
+    /* create banded area at y=400 */
+    yline(400, lpattern(solid) lwidth(10) lcolor(navy%20))                                          
+
+    /* write note about importance of shaded region */
+    text(400 635 &quot;In-plot notes&quot;, color(&quot;109 110 113&quot;) size(medsmall))  
+
+    /*set y-axis value labels*/
+    ylabel(0(200)800, labsize(small))   
+
+    /*use subtitle in 11 o&#39;clock position for y axis title instead of repositioning ytitle*/
+    subtitle(&quot;Number of New Care Sales&quot;, position(11) margin(b+2 l-6) size(medsmall))                       
+        
+    /*set x-axis value labels*/
+    xlabel(624(2)645, format(%tm_NN/ccYY) labsize(small))   
+
+    /*set x-axis title*/                                    
+    xtitle(&quot;Month&quot;, margin(t+3 b-2))                                                        
+        
+    /* set up legend, arrange linear fit (5) key next to observational data key (2) */  
+    legend(on position(3) cols(1) order(1 2 5 &quot;Fitted values&quot; 3 4) region(lwidth(0))                                
+        symxsize(2) size(small))        
+
+    /*set graph title if in draft form, else add title in destination document*/
+    title(&quot;{bf: FIGURE 3}: A Scatter Plot&quot;,                         
+        span position(11) size(medium)  margin(b+3 l+1))                        
+                
+    /*add figure note if in draft form, else add in destination document*/
+    note(&quot;Notes: Data were generated for demonstration purposes and range from January 2012 to September 2013.&quot;                         
+        &quot;N = `c(N)&#39;&quot;,                                               
+        size(small)                                                             
+        margin(t+1 l-6))                                                            
+    ;                                                                   
+#delimit cr         </code></pre>
+</div>
+<div id="histograms" class="section level2">
+<h2>Histograms</h2>
+<p><strong>INSERT IMAGE HERE</strong></p>
+<pre><code>clear all
+set more off
+
+set scheme CPL_theme
+graph set window fontface &quot;Gill Sans Nova Book&quot;
+
+* Import raw data.
+sysuse nlsw88, clear
+
+* twoway histogram doesn&#39;t automatically set bar colors according to scheme
+* must be set manually.
+
+#delimit ;
+
+twoway hist wage,
+    
+    color(&quot;38 145 208&quot;) /*set bar color to CPL Policy Brief Blue*/
+    width(2)            /*set width of bins*/
+    start(0)            /*force bins to start at 0*/
+    gap(15)             /*set gap between bars*/    
+    frequency           /*request bins be frequency counts*/
+    
+    /*set y-axis value label size*/
+    ylabel(,labsize(small))
+
+    /*remove y-axis title*/
+    ytitle(&quot;&quot;)
+    
+    /*use subtitle in 11 o&#39;clock position for y axis title instead of repositioning ytitle*/
+    subtitle(&quot;Number of Female Wage Earners&quot;, position(11) margin(b+2 l-6) size(medsmall))
+
+    /*Specify x-axis title and position*/
+    xtitle(&quot;Hourly Wage&quot;, margin(t+2))
+    
+    /*set x-axis labels with $ sign and set size*/
+    xlabel(0 10 &quot;$10&quot; 20 &quot;$20&quot; 30 &quot;$30&quot; 40 &quot;$40&quot;, labsize(small))   
+    
+    /*add reference line for mean*/
+    xline(7.77, lpattern(solid) lcolor(black) )
+    
+    /*add note for reference line in y x location with compass direction orientation*/
+    text(500 8 &quot;Reference line note&quot;, placement(east)
+    color(&quot;109 110 113&quot;) size(medsmall))
+    
+
+    /*set graph title if in draft form, else add title in destination document*/
+    title(&quot;{bf: FIGURE 4}: A Histogram&quot;,                            
+        span position(11) size(medium)  margin(b+3 l+1))                        
+                
+    /*add figure note if in draft form, else add in destination document*/
+    note(&quot;Notes: Data are from the National Longitudinal Survey, female sample, 1988.&quot;                          
+        &quot;N = `c(N)&#39;&quot;,                                               
+        size(small)                                                         
+        margin(t+2 l-6))
+    ;
+#delimit cr</code></pre>
+</div>
+</div>
+<div id="bar-graphs" class="section level1 tabset">
+<h1 class="tabset">Bar Graphs</h1>
+<div id="categorical-variables" class="section level2">
+<h2>Categorical Variables</h2>
+<p><strong>INSERT IMAGE HERE</strong></p>
+<pre><code>clear all
+set more off
+
+set scheme CPL_theme
+graph set window fontface &quot;Gill Sans Nova Book&quot;
+
+* Import raw data.
+sysuse nlsw88, clear
+
+/*create dummy indicator variables from race and marital status variables*/
+gen white = race == 1
+
+gen black = race == 2
+
+gen other = race == 3
+
+rename married maritalstatus
+
+gen single = maritalstatus == 0
+
+gen married = maritalstatus == 1
+
+#delimit ;
+
+/*initialize command, set reporting statistic to sum of dummy variable within sample*/
+graph bar (sum) 
+
+    /*list all variables to be summed*/
+    white black other single married, 
+    
+    /*treat variables as categories (see appendix tutorial)*/
+    ascategory  
+
+    /*use variable names instead of variable labels*/
+    nolabel
+
+    /*use subtitle in 11 o&#39;clock position for y axis title instead of repositioning ytitle*/
+    subtitle(&quot;Number of Female Wage Earners&quot;, position(11) margin(b+2 l-6) size(medsmall))  
+
+    /*set graph title if in draft form, else add title in destination document*/
+    title(&quot;{bf: FIGURE 5}: One Way Distribution of Categorical Variables, Vertical Bars&quot;,                           
+        span position(11) size(medium)  margin(b+3 l+1))                        
+                
+    /*add figure note if in draft form, else add in destination document*/
+    note(&quot;Notes: Data are from the National Longitudinal Survey, female sample, 1988.&quot;                          
+        &quot;N = `c(N)&#39;&quot;,                                               
+        size(small)                                                         
+        margin(t+2 l-6))        
+    ;
+#delimit cr</code></pre>
+</div>
+<div id="categorical-horiztonal" class="section level2">
+<h2>Categorical, Horiztonal</h2>
+<p><strong>INSERT IMAGE HERE</strong></p>
+<pre><code>clear all
+set more off
+
+set scheme CPL_theme
+graph set window fontface &quot;Gill Sans Nova Book&quot;
+
+* Import raw data.
+sysuse nlsw88, clear
+
+/*create dummy indicator variables from race and marital status variables*/
+gen white = race == 1
+
+gen black = race == 2
+
+gen other = race == 3
+
+rename married maritalstatus
+
+gen single = maritalstatus == 0
+
+gen married = maritalstatus == 1
+
+#delimit ;
+
+/*initialize command, set reporting statistic to sum of dummy variable within sample*/
+graph hbar (sum) 
+
+    /*list all variables to be summed*/
+    white black other single married, 
+    
+    /*treat variables as categories (see appendix tutorial)*/
+    ascategory  
+
+    /*use variable names instead of variable labels*/
+    nolabel
+
+    /*add data value labels to ends of bars*/
+    blabel(bar) 
+
+    /*add axis title*/
+    ytitle(&quot;Number of Female Wage Earners&quot;, size(medsmall) margin(t+2)) 
+
+    /*set graph title if in draft form, else add title in destination document*/
+    title(&quot;{bf: FIGURE 6}: One Way Distribution of Categorical Variables, Horizontal Bars&quot;,                         
+        span position(11) size(medium)  margin(b+3 l+1))                        
+                
+    /*add figure note if in draft form, else add in destination document*/
+    note(&quot;Notes: Data are from the National Longitudinal Survey, female sample, 1988.&quot;                          
+        &quot;N = `c(N)&#39;&quot;,                                               
+        size(small)                                                         
+        margin(t+2 l-6))    
+    ;
+#delimit cr</code></pre>
+</div>
+<div id="two-way-dist-y-axis-count-with-reference" class="section level2">
+<h2>Two-way Dist, Y-Axis count with Reference</h2>
+<p><strong>INSERT IMAGE HERE</strong></p>
+<pre><code>clear all
+set more off
+
+set scheme CPL_theme
+graph set window fontface &quot;Gill Sans Nova Book&quot;
+
+sysuse nlsw88, clear
+
+#delimit ;
+
+/*initialize command, specify y variable if using, and display statistic*/
+/*statistic can be count, percent, mean, median, sum pX, min, or max*/
+/*when no statistic is specified, the default is mean */
+graph bar (count), 
+    /*first x variable*/
+    over(married) 
+    
+    /*second x variable*/
+    over(race) 
+    
+    /*treat x variables like y variables*/
+    /*eg each level assigned different colors, group together on x axis*/
+    /*and identify levels with a legend */
+    asyvars 
+    
+    /*add a small gap between levels of first x variable*/
+    bargap(10) 
+    
+    /*set y-axis to match theme*/   
+    yscale(lcolor(&quot;184 198 214&quot;))   
+
+    /*set y-axis value label size*/
+    ylabel(,labsize(small))                                                         
+            
+    /*use subtitle in 11 o&#39;clock position for y axis title instead of repositioning ytitle*/
+    subtitle(&quot;Number of Female Wage Earners&quot;, position(11) margin(b+2 l-6) size(medsmall))                      
+    ytitle(&quot;&quot;)
+    
+    /*add reference line at y=600*/
+    yline(600, lpattern(solid) lcolor(black))                                                           
+    
+    /*add text to describe reference line*/
+    text(650 50 &quot;In-plot notes&quot;, color(&quot;109 110 113&quot;) size(medsmall))   
+    
+    /*set legend options*/
+    legend(on position(3) cols(1) region(lstyle(none))
+        symysize(2)                                                         
+        symxsize(2)) 
+
+    /*set graph title if in draft form, else add title in destination document*/
+    title(&quot;{bf: FIGURE 7}: A Bar Plot with Y-axis as Count&quot;,                            
+        span position(11) size(medium)  margin(b+3 l+3))                        
+                
+    /*add figure note if in draft form, else add in destination document*/
+    note(&quot;Notes: Data are from the National Longitudinal Survey, female sample, 1988.&quot;                          
+        &quot;N = `c(N)&#39;&quot;,                                               
+        size(small)                                                         
+        margin(t+1 l-6))        
+    ;
+#delimit cr</code></pre>
+</div>
+<div id="y-axis-as-percent-within-sample" class="section level2">
+<h2>Y-axis as Percent within Sample</h2>
+<p><strong>INSERT IMAGE HERE</strong></p>
+<pre><code>clear all
+set more off
+
+set scheme CPL_theme
+graph set window fontface &quot;Gill Sans Nova Book&quot;
+
+* Import raw data.
+sysuse nlsw88, clear
+
+#delimit ;
+
+/*initialize command, allow default reporting statistic; percent of group within sample*/
+graph bar, 
+    
+    /*set specify variables to graph as counts*/
+    over(married) over(race) 
+    
+    /*treat the &quot;over&quot; variables like &quot;y variables&quot; (see appendix tutorial)*/
+    asyvars 
+    
+    /*add space between bars*/
+    bargap(10) 
+    
+    /*set y-axis range*/
+    yscale(range(0(20)60))
+    
+    /*label y-axis values with % sign*/
+    ylabel(0 &quot;0%&quot; 20 &quot;20%&quot; 40 &quot;40%&quot; 60 &quot;60%&quot;)
+    
+    /*use subtitle in 11 o&#39;clock position for y axis title instead of repositioning ytitle*/
+    subtitle(&quot;Overall Percentage of Female Wage Earners&quot;, position(11) margin(b+2 l-6) size(medsmall))                      
+    ytitle(&quot;&quot;)
+    
+    /*add legend, suppress outline*/
+    legend(on position(3) cols(1) region(lstyle(none)) 
+        symysize(2)                                                         
+        symxsize(2))
+
+    /*set graph title if in draft form, else add title in destination document*/
+    title(&quot;{bf: FIGURE 8}: A Bar Plot with Y-axis as Percent within Sample&quot;,                            
+        span position(11) size(medium)  margin(b+3 l+3))                        
+                
+    /*add figure note if in draft form, else add in destination document*/
+    note(&quot;Notes: Data are from the National Longitudinal Survey, female sample, 1988.&quot;                          
+        &quot;N = `c(N)&#39;&quot;,                                               
+        size(small)                                                         
+        margin(t+1 l-6))    
+    ;
+#delimit cr</code></pre>
+</div>
+<div id="y-axis-as-percent-within-group-and-in-plot-legend" class="section level2">
+<h2>Y-axis as Percent within Group and In Plot Legend</h2>
+<p><strong>INSERT IMAGE HERE</strong></p>
+<pre><code>clear all
+set more off
+
+set scheme CPL_theme
+graph set window fontface &quot;Gill Sans Nova Book&quot;
+
+* Import raw data.
+sysuse nlsw88, clear
+
+#delimit ;
+
+/*initialize command, allow default reporting statistic; percent of group within sample*/
+graph bar, 
+    
+    /*specify variables to graph as counts*/
+    over(married) over(race) 
+    
+    /*treat the &quot;over&quot; variables like &quot;y variables&quot; (see appendix tutorial)*/
+    asyvars 
+    
+    /*report the percentage of the first &quot;over&quot; group within the second*/
+    percentages 
+    
+    /*add space between bars*/
+    bargap(10) 
+    
+    /*set y-axis range*/
+    yscale(range(0(20)80))
+    
+    /*label y-axis values with % sign*/
+    ylabel(0 &quot;0%&quot; 20 &quot;20%&quot; 40 &quot;40%&quot; 60 &quot;60%&quot; 80 &quot;80%&quot;)
+    
+    /*use subtitle in 11 o&#39;clock position for y axis title instead of repositioning ytitle*/
+    subtitle(&quot;Percentage of Female Wage Earners by Marital Status within Race/Ethnicity&quot;, position(11) margin(b+2 l-6) size(medsmall))      
+    ytitle(&quot;&quot;)
+    
+    /*add legend inside graph region, suppress outline, set legend fill to transparent*/
+    legend(on position(12) ring(0) bmargin(t+2) rows(1) region(lstyle(none) fcolor(none)) 
+        symysize(2) symxsize(2) )
+
+    /*set graph title if in draft form, else add title in destination document*/
+    title(&quot;{bf: FIGURE 9}: A Bar Plot with Y-axis as Percent within Group and In-Plot Legend&quot;,                          
+        span position(11) size(medium)  margin(b+3 l+3))                    
+                
+    /*add figure note if in draft form, else add in destination document*/
+    note(&quot;Notes: Data are from the National Longitudinal Survey, female sample, 1988.&quot;                          
+        &quot;N = `c(N)&#39;&quot;,                                               
+        size(small)                                                         
+        margin(t+1 l-6))    
+    ;
+#delimit cr</code></pre>
+</div>
+</div>
+<div id="formatting-options-for-all-graphs" class="section level1 tabset">
+<h1 class="tabset">Formatting Options for All Graphs</h1>
+<p>This section details universal options for formatting axes, text elements, legends, graph and plot regions for all graphs.</p>
+<div id="axes-formatting-options" class="section level2">
+<h2>Axes formatting options</h2>
+<p><strong>yscale and xscale</strong>: Control the Y and X axes scale and appearance</p>
+<pre><code>yscale(range() reverse alt log lcolor() off)
+
+xscale(range() reverse alt log lcolor() off)</code></pre>
+<ul>
+<li><p>off: Force axis suppression.</p></li>
+<li><p>range(): Specify axis range.</p></li>
+<li><p>log: Use logarithmic scale.</p></li>
+<li><p>alt: Place axis on side opposite to default in relation to plot (default is left for y axis and bottom for x axis).</p></li>
+<li><p>reverse: Control whether scale runs from min to max (default) or max to min.</p></li>
+<li><p>lcolor(): Set axis color. See help colorstyle. Default: 209 219 229 (RGB).</p></li>
+</ul>
+<p><strong>ylabel and xlabel</strong>: Control attributes of Y and X axes labels.</p>
+<pre><code>ylabel(min(gap)max, angle() format() labsize() nogrid)
+
+xlabel(min(gap)max, angle() format() labsize() grid)</code></pre>
+<ul>
+<li><p>min(gap)max,: Range and gap of labels; for example 0(10)100 will label the specified axis 0,10,20,30…100. Be consistent with scale values. Comma required if additional options specified.</p></li>
+<li><p>angle(): Set label angle (how much tilting). Default: 0 (horizontal).</p></li>
+<li><p>format(): Change formatting of values as shown on the axis. See help format and help datetime for numeric and date formatting codes.</p></li>
+<li><p>labsize(small): Set label size. See help textsizestyle for all sizes. Default: small.</p></li>
+<li><p>[no]grid: Remove horizontal gridlines to yscale (nogrid) or add vertical gridlines to xscale(grid). Default: grid for yscale, nogrid for xscale.</p></li>
+</ul>
+<p><strong>ytitle and xtitle</strong>: Create and format axis titles.</p>
+<pre><code>ytitle(&quot;Title&quot;, color() size() margin())
+
+xtitle(&quot;Title&quot;, color() size() margin())</code></pre>
+<ul>
+<li><p>“Title”,: Axis title. Blank by defult ("",). Comma required if additional options specified.</p></li>
+<li><p>color(): Set title color. See help colorstyle. Default: 109 110 113 (RGB).</p></li>
+<li><p>size(): Set font size. See help textsizestyle for all sizes. Default: small for ytitle, medsmall for xtitle.</p></li>
+<li><p>margin(): Set margin width around title. Suboptions include t(top), b(bottom), l(left), and r(right). Adjust by specifying =/+/-#, where # is % of minimum of width and height of the graph. Setting this usually takes some trial and error.</p></li>
+</ul>
+</div>
+<div id="text" class="section level2">
+<h2>Text</h2>
+<p><strong>title and subtitle</strong>: Graph title. Always use titles and figure numbers when drafting figures or during preliminary analyses. During publication titles will be added in the destination document.</p>
+<p>Use left justified subtitles to create horizontal y-axis labels.</p>
+<pre><code>title(&quot;Title&quot;, position() color() size() margin() )</code></pre>
+<ul>
+<li><p>“Title”: Set text for title. Comma required if additional options specified.</p></li>
+<li><p>position(): Set position according to clock face. 12 is top centered, 11 is top left justified.</p></li>
+<li><p>color(): Set title color. See help colorstyle. Default: 109 110 113 (RGB).</p></li>
+<li><p>size(): Set title size. See help textsizestyle. Default: medium for title, small for subtitle.</p></li>
+<li><p>margin(): Set margin width around y-title. Suboptions include t(top), b(bottom), l(left), and r(right). Adjust by specifying =/+/- #, where # is % of minimum of width and height of the graph. Setting this usually takes some trial and error.</p></li>
+</ul>
+<p><strong>note</strong>: Figure notes. These are critically important and should be as descriptive as possible, especially during preliminary analyses. During publication notes will be added in the destination document.</p>
+<pre><code>note(&quot;Your text here&quot;, color() size() margin() )</code></pre>
+<ul>
+<li><p>color(): Set title color. See help colorstyle. Default: 109 110 113 (RGB).</p></li>
+<li><p>size(): Set note size. See help textsizestyle. Default: vsmall</p></li>
+<li><p>margin(): Can be used as described above in the Title and subtitle section but generally you will not need to specify this for your notes.</p></li>
+</ul>
+<p>Notes should error on the side of too much detail rather than too little. Things to include:</p>
+<ul>
+<li>the data source</li>
+<li>date range</li>
+<li>sample information</li>
+<li>observation number (use r(N) local so this is accurate)</li>
+<li>variable definitions</li>
+<li>anything else a reader not intimately familiar with your data or your code should know</li>
+</ul>
+<p>You can also use SMCL within your notes to make parts of text bold <code>{bf: your text}</code> or italic <code>{it: your text}</code>; see <code>help smcl</code> for further detail.</p>
+<p>The <code>note()</code> option will not wrap your text to match the graph region. You will need to manually wrap the text by starting new lines as needed. See the example below.</p>
+<pre><code>note(&quot;This is your note and it will occupy several rows.&quot;
+&quot;This is the second line.&quot;
+&quot;This is the last line, and options will follow it.&quot;)</code></pre>
+<p><strong>text</strong>: Used to add text anywhere on the graph.</p>
+<p>One possible use of the <code>text</code> command is for adding value or variable labels. You can also add items like a horizontal line “________” or a dot “*” to your plot.</p>
+<pre><code>text(Y-VALUE X-VALUE &quot;Your text here!&quot;, color() size() )</code></pre>
+<ul>
+<li><p>Y-VALUE X-VALUE: Set the y-x coordinates of text.</p></li>
+<li><p>“Your text here!”, Text you want displayed. Comma required if additional options specified.</p></li>
+<li><p>color(): Set text color. See help colorstyle. Default: 109 110 113 (RGB).</p></li>
+<li><p>size(): Set text size. See help textsizestyle. Default: medsmall.</p></li>
+</ul>
+</div>
+<div id="legend" class="section level2">
+<h2>Legend</h2>
+<p>Use legends when two or more groups or variables are displayed.</p>
+<p>Use <code>position(3) cols(1)</code> to place legends on the righthand side of your figure in a single column.</p>
+<p>Use a combination of <code>position() cols() ring() bmargin()</code> to place legends inside of the plot region.</p>
+<p>Use <code>region(fcolor(none))</code> to set the legion region to transparent if needed.</p>
+<p>See <code>help legend_options</code> for more options and additional information.</p>
+<pre><code>legend(on position() ring() bmargin() cols() rows() order() label() symxsize() symysize() size() region() )</code></pre>
+<ul>
+<li><p>on: Force display of legend. Default for <code>CPL_Theme</code> is no legend.</p></li>
+<li><p>position: Set position of legend within graph region according to clock face. Default is 6, centered at bottom. <code>position(3)</code> should be used at CPL as the default when drafting figures.</p></li>
+<li><p>ring(): Set <code>ring(0)</code> to place the legend inside the graph region. Used most often when finalizing figures for publication. Values greater than 0 set the legend at further distances from the plot region and generally should not need to be used.</p></li>
+<li><p>bmargin(): Used in conjunction with <code>position()</code> and <code>ring(0)</code> to fine tune in-plot legend location. Suboptions include <code>t(top), b(bottom), l(left), and r(right)</code>. Adjust by specifying =/+/- #, where # is number generally from 1 to 10, though larger numbers may be needed. Expect some trial and error.</p></li>
+<li><p>cols(): Set number of columns in legend. <code>cols(1)</code> forces single vertical arrangement. Default: 2 if <code>rows()</code> is not specified.</p></li>
+<li><p>rows(): Alternative to <code>cols()</code>. Set number of rows in legend. <code>rows(1)</code> forces single horizontal arrangement.</p></li>
+<li><p>order(): Set the order that your legend items will appear. If there are three elements to be displayed, the default is <code>order(1 2 3)</code>. If you wanted the third element to appear first simply specify <code>order(3 1 2)</code>. If you wanted to display only the first two elements you would specify <code>order(1 2)</code>.</p></li>
+<li><p>label(): Create new labels using the same ordering seen in the <code>order()</code> option. For example, - <code>label(1 "Ages 45 to 54") label(3 "Ages 65 and older")</code> will add new labels to the 1st and 3rd legend item but leave the default for the second in place.</p></li>
+<li><p>symxsize() &amp; symysize(): Used to set the horizontal and vertical length of legend symbols. symxsize default is 13, symysize default is set according to the height of the font used in the legend.</p></li>
+<li><p>size(): Set text size. See <code>help textsizestyle</code>. Default: <code>medsmall.</code></p></li>
+<li><p>region(): Set border and background of legend region. - <code>fcolor()</code>: Set fill color of legend region. Default: white. Transparent: none. See <code>help colorstyle</code> for more options. - <code>lwidth()</code>: Set legend area border width. Use none to remove border. See <code>help linewidthstyle</code>.</p></li>
+</ul>
+</div>
+<div id="graph-and-plot" class="section level2">
+<h2>Graph and plot</h2>
+<p><strong>Graph region options</strong></p>
+<p><code>graphregion</code>: Control the look of the entire graph.</p>
+<pre><code>graphregion(color() margin() )</code></pre>
+<ul>
+<li><p>color(): Set graph region background color. See <code>help colorstyle</code>. Default: white.</p></li>
+<li><p>margin(): Set margin width around graph region. This is like adding a “ring” of blank space around the entire graph. Suboptions include <code>t(top), b(bottom), l(left), and r(right)</code>. Adjust them by specifying =/+/-#, where # is % of minimum of width and height of the graph. Setting this usually takes some trial and error.</p></li>
+</ul>
+<p><strong>ysize and xsize</strong>: Control the height and width of the graph.</p>
+<ul>
+<li><p>ysize(): Set height of entire graph. See help region_options. Default: 6.42.</p></li>
+<li><p>xsize(): Set width of entire graph. See help region_options. Default: 6.42.</p></li>
+</ul>
+<p><strong>Plot region options</strong></p>
+<ul>
+<li>aspectratio(#): used to control the relationship between height and width of your plot region. A value of 1 creates a square plot region. 2 creates a plot region twice as tall as it is wide. .5 creates a plot region half as tall as it is wide. Since the overall size of the graph is not changed by the aspectratio() option, changing this will generally leave additional space around the plot region in either horizontally or vertically.</li>
+</ul>
+<p><strong>yline and xline</strong>: used for adding horizontal and vertical reference lines. NOTE: you can create horizontal or vertical shading by arbitrarily enlarging lwidth.</p>
+<pre><code>yline(Y-VALUE, lpattern() lwidth() lcolor()
+
+xline(X-VALUE, lpattern() lwidth() lcolor()</code></pre>
+<ul>
+<li><p>VALUE,: Set coordinate of line. For example <code>xline(5)</code> will set a vertical reference line at 5 on the x-axis. Comma required if additional options specified.</p></li>
+<li><p>lpattern(): Set line pattern (solid, dashed,…). See <code>help linepatternstyle</code> for options.</p></li>
+<li><p>lwidth(): Set line width/thickness. See <code>help linewidthstyle</code> for options.</p></li>
+<li><p>lcolor: Set line color. See help colorstyle for options.</p></li>
+<li><p>|| rarea: Shade region in between two lines on graph. This is most useful for line &amp; time series plots. If using this option, you must add a double pipe || before it.</p></li>
+</ul>
+<pre><code>|| rarea VARIABLES in, color() lwdith()</code></pre>
+<ul>
+<li><p>VARIABLES: Specify variables to shade between. in ,: Specify observation numbers to customize width of shaded area.</p></li>
+<li><p>color(): Set area color. See <code>help colorstyle</code>. Default: 109 110 113 (RGB).</p></li>
+<li><p>lwidth(): Set area border width/thickness. See <code>help linewidthstyle</code>. Default: 0.</p></li>
+</ul>
+</div>
+</div>
+<div id="additional-options-for-customizing-figures" class="section level1 tabset">
+<h1 class="tabset">Additional Options for Customizing Figures</h1>
+<p>The following section highlights the major points needed to expand upon the preceding examples, or to create your own figures from the ground up using Stata’s <code>twoway</code> and <code>graph bar</code> functions.</p>
+<p>Additional detail can be found in the documentation for both: <code>help twoway</code> and <code>help graph bar</code>.</p>
+<p>Help from your colleagues is also always available in CPL’s #dataviz Slack channel.</p>
+<div id="twoway" class="section level2">
+<h2>Twoway</h2>
+<p>Twoway makes line graphs, time series, scatter plots, and histograms using the same basic command: <code>graph twoway graphtype</code>, where <code>graphtype</code> is either line for line graphs, <code>tsline</code> for time series, <code>scatter</code> for scatter plots or <code>histogram</code> for histograms.</p>
+<p>There are three ways to initiate the <code>graph twoway</code> command, each with the same result:</p>
+<pre><code>graph twoway graphtype YVAR XVAR, options
+
+twoway graphtype YVAR XVAR, options
+
+graphtype YVAR XVAR, options</code></pre>
+<p>Each of these will produce the same figure. This guide recommends and uses the middle option.</p>
+<p><code>Twoway</code> also supports a range of other plots like linear and quadratic prediction plots. For additional detail on the graph types presented in this guide or for instructions on how to create others please see <code>help twoway</code>.</p>
+</div>
+<div id="line-graphs" class="section level2">
+<h2>Line Graphs</h2>
+<p><strong>When making line graphs be sure that the data are sorted in the order of the x variable, or specify the <code>sort</code> option</strong>. Otherwise you will get something that looks like the scribblings of a child</p>
+<pre><code>twoway line YVAR1 YVAR2...YVARN XVAR, sort lpattern() lwidth() lcolor()</code></pre>
+<ul>
+<li><p>sort: Sorts on x variable before graphing. Good practice to include this even if your data are already sorted. Using the CPL_theme (<code>set scheme CPL_theme</code>) will frequently eliminate the need to specify the following options:</p></li>
+<li><p>lpattern(): Set the line pattern style. Options include solid dash and dot amongst others. See <code>help linepatternstyle</code> for full list.</p></li>
+<li><p>lwidth(): Set line thickness. Options include thin medium and thick amongst others. See <code>help linewidthstyle</code> for full list.</p></li>
+<li><p>lcolor(): Set color and opacity of line. Options include gray black blue and gold See <code>help colorstyle</code> for full list.</p></li>
+</ul>
+<p><strong>Time Series</strong></p>
+<p>Time series are a special form of line graphs and are called using <code>twoway tsline</code>.</p>
+<p>Time series graphs require you to declare the time variable and its interval using <code>tsset</code>. For example, if your data are summarized at the month-level and contained in a variable called “month_of_the_year”, you would use the following code before your twoway tsline command.</p>
+<pre><code>tsset month_of_the_year, monthly</code></pre>
+<p>Twoway will then assume that the variable set in that statement is the time variable that your Y variables are to be plotted against in the following statement</p>
+<pre><code>twoway tsline YVAR1 YVAR2, options</code></pre>
+<p>The same line formatting options described above for line graphs apply to tsline as well.</p>
+<p>See <code>help tsset</code> for more information.</p>
+</div>
+<div id="scatter-plots-1" class="section level2">
+<h2>Scatter Plots</h2>
+<p>Scatter plots are the same as <code>twoway line</code> with the addition of an option for the symbol to be used. In fact you can use scatter to create line graphs by turning off marker symbols and connecting the points in your graph as follows.</p>
+<pre><code>twoway scatter YVAR XVAR, msymbol(none) connect(l)</code></pre>
+<p><code>Connect</code> otherwise does not need to be specified in scatter as its default setting is <code>none.</code></p>
+<p><strong>Scatter plot options</strong></p>
+<pre><code>twoway scatter YVAR XVAR, msymbol() mcolor() msize()</code></pre>
+<p>Using the CPL_theme (set scheme CPL_theme) will frequently eliminate the need to specify the following options:</p>
+<ul>
+<li><p>msymbol(): Set the shape of the marker. Options include <code>circle</code> <code>diamond</code> and <code>triangle</code> See <code>help symbolstyle</code> for full list.</p></li>
+<li><p>msize(): Set size of marker. Options include <code>small</code> <code>medium</code> and <code>large.</code> See <code>help markersizestyle</code> for details.</p></li>
+<li><p>mcolor(): Set color and opacity of marker, inside and out. Options include <code>gray</code>, <code>black</code>, <code>blue</code>, and <code>gold</code> See <code>help colorstyle</code> for full list.</p></li>
+</ul>
+<p>If you want to label the points, or a set of points, in your scatterplot, use the following options</p>
+<ul>
+<li><p>mlab: Set the variable containing the labels</p></li>
+<li><p>mlabposition: Set the location of the label</p></li>
+<li><p>msize: Set the size of label</p></li>
+</ul>
+</div>
+<div id="histograms-1" class="section level2">
+<h2>Histograms</h2>
+<p><code>Twoway</code> can also be used to make different types of histograms using the following command: <code>twoway histogram XVAR hist_type</code> where <code>hist_type</code> is one of:</p>
+<ul>
+<li>density: Density plot; default option if hist_type not specified</li>
+<li>fraction: Scales bars so that the sum of their heights equals 1</li>
+<li>percent: Scales bars so that the sum of their heights equals 100</li>
+<li>frequency: Scales bars so that the height of an individual bar is the number of observations in that category.</li>
+</ul>
+<pre><code>twoway histogram XVAR hist_type bin() width() start() gap()</code></pre>
+<ul>
+<li><p>bin(): Specify number of bins. Not needed if <code>width()</code> specified.</p></li>
+<li><p>width(): Specify width of bins in variable units. Not needed if <code>bin()</code> specified.</p></li>
+<li><p>start(): Set lower limit of first bin, default is minimum value of the variable specified.</p></li>
+<li><p>gap(): Specify gap between bins; range from 0-100</p></li>
+</ul>
+<p><strong>Additional options</strong></p>
+<ul>
+<li><p>horizontal: Bars drawn vertical by default, use this option if you want horizontal bars</p></li>
+<li><p>discrete: Specify the data are discrete and each value should have its own bin/bar. <code>width()</code> and <code>start()</code> are rarely used when discrete is specified.</p></li>
+</ul>
+<p>See help <code>twoway histogram</code> for additional information on histograms.</p>
+</div>
+<div id="combining-twoway-plots" class="section level2">
+<h2>Combining twoway plots</h2>
+<p>You can mix line and scatter plots in the same figure simply by using multiple line and scatter calls separated by pipes (||) in your twoway statement.</p>
+<pre><code>twoway line, options || scatter, options</code></pre>
+</div>
+<div id="bar-graphs-1" class="section level2">
+<h2>Bar Graphs</h2>
+<p>Graph bar’s basic command structure is as follows:</p>
+<pre><code>graph bar (*statistic*) YVAR, over(XVAR1) over(XVAR2) nolabel relabel() blabel() bargap() legend()</code></pre>
+<p>where <em>statistic</em> is <strong>mean</strong> by default. If mean is the desired statistic, as will often be the case, (<em>statistic</em>) can be omitted entirely from the statement.</p>
+<p>You do not need a YVAR if treating your <code>over()</code> x-variables as y-variables.</p>
+<p>Over options include:</p>
+<ul>
+<li>over(XVAR1): First categorical x variable, sorted in descending height by default or</li>
+<li>over(XVAR1, sort(1)): First categorical x variable, sorted in ascending height</li>
+</ul>
+<p>Other options include:</p>
+<ul>
+<li><p>nolabel: Use a variable’s name as the axis label instead of its label</p></li>
+<li><p>relabel(): Override the default labeling of a categorical variable. Suppose for instance you have a variable “Age” that takes three string values “old” “very old” and “very very old.” the following command would override these with more specific labels. relabel(1 “45-54 years old” 2 “55-64 years old” 3 “65 and older”). The ordering of the labels follows the ordering seen when you run tabulate age.</p></li>
+<li><p>blabel(bar): Add value labels to the bars in your graph. See help blabel for more information.</p></li>
+<li><p>bargap(): Specify the amount of space between bars in your graph. Can overlap using negative values.</p></li>
+<li><p>legend(on): Add a legend to your graph, default includes thin borderline around it</p></li>
+<li><p>legend((on) region(lstyle(none)): Add a legend to your graph, with no outline</p></li>
+</ul>
+<p><code>Help graph bar</code> has the information you’ll need to extend the examples here to more advanced applications.</p>
+</div>
+</div>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -303,7 +1175,41 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
