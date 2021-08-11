@@ -29,7 +29,11 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
@@ -57,6 +61,7 @@ if (window.hljs) {
 
 
 
+<link rel="stylesheet" href="www/styles.css" type="text/css" />
 
 
 
@@ -215,7 +220,73 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
 
 
 
@@ -225,6 +296,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -257,6 +338,14 @@ $(document).ready(function () {
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">CPL Figure Design Guide for R <img align="right" src="CPL_final_web.png" width=163 height=101></h1>
@@ -266,59 +355,9 @@ $(document).ready(function () {
 
 <pre class="r"><code>knitr::opts_chunk$set(warning = FALSE)
 knitr::opts_chunk$set(message = FALSE)</code></pre>
-<div id="introduction" class="section level1">
-<h1>Introduction</h1>
-<p>This guide has three purposes:</p>
-<ol style="list-style-type: decimal">
-<li>Set the expectations for data visualization at the California Policy Lab</li>
-<li>Provide adaptable code templates that reflect the expectations</li>
-<li>Outline the options you will need to further customize your exhibits</li>
-</ol>
-<p>As a living document, suggestions for additions, deletions, or edits are welcome.</p>
-</div>
-<div id="guidance-for-all-cpl-figures" class="section level1">
-<h1>Guidance for All CPL Figures</h1>
-<ul>
-<li>Even in draft form figures must be easy to read and understand</li>
-<li>Avoid using abbreviations</li>
-</ul>
-<div id="titles-and-notes" class="section level2">
-<h2>Titles and Notes</h2>
-<ul>
-<li>In draft form use R to add titles and notes</li>
-<li>In publication form titles and notes should be added in the destination document (Word, Powerpoint) rather than in R</li>
-<li>Titles should be descriptive and include a figure number</li>
-<li>Notes should include information about the data: e.g., source, date range, sample selection, and sample size.</li>
-</ul>
-</div>
-<div id="axis-formatting" class="section level2">
-<h2>Axis Formatting</h2>
-<ul>
-<li>Always include descriptive axis titles</li>
-<li>Use a left justified Y-axis title horizontally above the axis instead of a vertical Y-axis title</li>
-<li>Format percentages as whole numbers with % signs, not as decimals: 10% not 0.10</li>
-<li>Axis titles should be bold, axis values should not</li>
-</ul>
-</div>
-<div id="legend-formatting" class="section level2">
-<h2>Legend Formatting</h2>
-<ul>
-<li>Use legends when two or more groups or variables are displayed</li>
-<li>Use variable labels instead of variable names: “Graduation Year” not “gradyr”</li>
-<li>In draft form place legends to the right of the figure</li>
-<li>In publication form, place legends within the graph if space allows, otherwise legends should remain to the right of the figure</li>
-</ul>
-</div>
-<div id="race-equity-considerations" class="section level2">
-<h2>Race-equity Considerations</h2>
-<ul>
-<li>Adopted from <a href="https://osf.io/x8tbw/">The Urban Institute’s Applying Racial Equity Awareness in Data Visualization</a>.</li>
-<li>Be purposeful in the ordering of your data; it affects how readers perceive the relationship or hierarchy between groups</li>
-<li>Does the study focus on a particular community? If so, present that group first</li>
-<li>What point are you trying to make with the data? Order the columns to reinforce it</li>
-<li>Consider ordering alphabetically, by population size, sample size, or effect size</li>
-</ul>
-</div>
+<div id="visualization-with-r-cpl" class="section level1">
+<h1>Visualization with R @ CPL</h1>
+<p>Hello R users! Visualization is made easy using the <code>cplthemes</code> package that was developed internally. Below are instructions for how to install it and after that are example graphics.</p>
 </div>
 <div id="installation" class="section level1">
 <h1>Installation</h1>
@@ -332,8 +371,8 @@ devtools::install_github(&quot;lmgibson/cplthemes&quot;)</code></pre>
 <pre><code>library(ggplot2)
 library(cplthemes)
 
-setThemeCPL()</code></pre>
-<p>The remaining sections provide customizable code templates for creating data visualizations using ggplot2 after setting the default theme to CPL’s theme.</p>
+cpl_set_theme()</code></pre>
+<p>The remaining sections provide customizable code templates for creating data visualizations using ggplot2 after setting the default theme to CPL’s theme. To see the code for each example click the <code>code</code> button to the top right of the graphic.</p>
 </div>
 <div id="bar-plots" class="section level1 tabset">
 <h1 class="tabset">Bar Plots</h1>
@@ -778,6 +817,8 @@ knitr::kable(colorschema)</code></pre>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -809,7 +850,41 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

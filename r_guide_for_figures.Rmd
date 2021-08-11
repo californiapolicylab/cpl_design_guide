@@ -1,5 +1,11 @@
 ---
 title: CPL Figure Design Guide for R <img align="right" src="CPL_final_web.png" width=163 height=101>
+output:
+    html_document:
+        self_contained: true
+        toc: true
+        toc_float: true
+        code_folding: hide
 ---
 
 ```{r rmarkdown-setup}
@@ -18,47 +24,11 @@ library(tidyverse)
 cpl_set_theme(color_schema = 'brief')
 ```
 
+# Visualization with R @ CPL
 
-# Introduction
-
-This guide has three purposes:
-
-1. Set the expectations for data visualization at the California Policy Lab
-2. Provide adaptable code templates that reflect the expectations
-3. Outline the options you will need to further customize your exhibits
-        
-As a living document, suggestions for additions, deletions, or edits are welcome.
-
-# Guidance for All CPL Figures
-
-* Even in draft form figures must be easy to read and understand
-* Avoid using abbreviations
-
-## Titles and Notes
-
-* In draft form use R to add titles and notes
-* In publication form titles and notes should be added in the destination document (Word, Powerpoint) rather than in R
-* Titles should be descriptive and include a figure number
-* Notes should include information about the data: e.g., source, date range, sample selection, and sample size.
-
-## Axis Formatting
-* Always include descriptive axis titles
-* Use a left justified Y-axis title horizontally above the axis instead of a vertical Y-axis title
-* Format percentages as whole numbers with % signs, not as decimals: 10% not 0.10
-* Axis titles should be bold, axis values should not
-
-## Legend Formatting
-* Use legends when two or more groups or variables are displayed
-* Use variable labels instead of variable names: “Graduation Year” not “gradyr”
-* In draft form place legends to the right of the figure
-* In publication form, place legends within the graph if space allows, otherwise legends should remain to the right of the figure
-
-## Race-equity Considerations
-* Adopted from [The Urban Institute’s Applying Racial Equity Awareness in Data Visualization](https://osf.io/x8tbw/).
-* Be purposeful in the ordering of your data; it affects how readers perceive the relationship or hierarchy between groups
-* Does the study focus on a particular community? If so, present that group first
-* What point are you trying to make with the data? Order the columns to reinforce it
-* Consider ordering alphabetically, by population size, sample size, or effect size
+Hello R users! Visualization is made easy using the `cplthemes` package that
+was developed internally. Below are instructions for how to install it and after
+that are example graphics. 
 
 # Installation
 Below are instructions for installing and using `cplthemes`, the California Policy Lab's
@@ -81,10 +51,11 @@ After installing cplthemes you will then run the following at the top of each sc
 library(ggplot2)
 library(cplthemes)
 
-setThemeCPL()
+cpl_set_theme()
 ```
 
-The remaining sections provide customizable code templates for creating data visualizations using ggplot2 after setting the default theme to CPL's theme.
+The remaining sections provide customizable code templates for creating data visualizations using ggplot2 after setting the default theme to CPL's theme. To see the code for each example click the `code` button
+to the top right of the graphic.
 
 # Bar Plots {.tabset}
 
