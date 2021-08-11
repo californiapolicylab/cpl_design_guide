@@ -1,12 +1,9 @@
-name: "cars"
+name: "designGuide"
 output_dir: "docs"
 navbar:
-  title: "Cars"
+  title: "CPL Design Guide"
   left:
-  - text: "Home"
-   href: index.html
-  - text: "Speed and Distance"
-   href: speed-and-distance.html
-output:
-  html_document:
- theme: cosmo
+    - text: "Home"
+      href: index.html
+    - text: "R Design Guide"
+      href: r_guide_for_figures.html
