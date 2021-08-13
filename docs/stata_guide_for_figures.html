@@ -389,7 +389,7 @@ graph set window fontface &quot;Gill Sans Nova Book&quot;</code></pre>
 <p>All examples saved as separate templates in <code>\\COMMONS\commons\code\stata\01_figure_guide\templates</code></p>
 <div id="time-series-with-legend" class="section level2">
 <h2>Time Series with Legend</h2>
-<p><strong>INSERT IMAGE HERE</strong></p>
+<p><img src="images/stata_images/graph1.png" /></p>
 <p>Here’s how to set up your data to label lines directly instead of using a legend.</p>
 <ol style="list-style-type: decimal">
 <li><p>Sort your data by the variable that will be used as the x-axis.</p></li>
@@ -418,7 +418,7 @@ foreach var in `yvar&#39;{
 gen label_`var&#39; = &quot;`var&#39;&quot; if _n==_N
 }</code></pre>
 <p>Your data will now look like this:</p>
-<p><strong>INSERT IMAGE HERE</strong></p>
+<p><img src="./images/stata_images/graphX.png" /></p>
 <ol style="list-style-type: decimal">
 <li>Now graph the data using twoway connected instead of twoway line, setting msize(0) to remove the markers you’d normally see in a scatter plot, and using mlab() to label your y-variables.</li>
 </ol>
@@ -490,7 +490,7 @@ twoway connected Toyota Ford Chevy Fiat yearmonth,
 </div>
 <div id="scatter-plots" class="section level2">
 <h2>Scatter Plots</h2>
-<p><strong>INSERT IMAGE HERE</strong></p>
+<p><img src="images/stata_images/graph3.png" /></p>
 <pre><code>clear all
 set more off
 
@@ -546,7 +546,7 @@ twoway scatter Toyota Ford Chevy Fiat yearmonth
 </div>
 <div id="histograms" class="section level2">
 <h2>Histograms</h2>
-<p><strong>INSERT IMAGE HERE</strong></p>
+<p><img src="images/stata_images/graph4.png" /></p>
 <pre><code>clear all
 set more off
 
@@ -609,7 +609,7 @@ twoway hist wage,
 <h1 class="tabset">Bar Graphs</h1>
 <div id="categorical-variables" class="section level2">
 <h2>Categorical Variables</h2>
-<p><strong>INSERT IMAGE HERE</strong></p>
+<p><img src="images/stata_images/graph5.png" /></p>
 <pre><code>clear all
 set more off
 
@@ -663,7 +663,7 @@ graph bar (sum)
 </div>
 <div id="categorical-horiztonal" class="section level2">
 <h2>Categorical, Horiztonal</h2>
-<p><strong>INSERT IMAGE HERE</strong></p>
+<p><img src="images/stata_images/graph6.png" /></p>
 <pre><code>clear all
 set more off
 
@@ -720,7 +720,7 @@ graph hbar (sum)
 </div>
 <div id="two-way-dist-y-axis-count-with-reference" class="section level2">
 <h2>Two-way Dist, Y-Axis count with Reference</h2>
-<p><strong>INSERT IMAGE HERE</strong></p>
+<p><img src="images/stata_images/graph7.png" /></p>
 <pre><code>clear all
 set more off
 
@@ -784,7 +784,7 @@ graph bar (count),
 </div>
 <div id="y-axis-as-percent-within-sample" class="section level2">
 <h2>Y-axis as Percent within Sample</h2>
-<p><strong>INSERT IMAGE HERE</strong></p>
+<p><img src="images/stata_images/graph8.png" /></p>
 <pre><code>clear all
 set more off
 
@@ -837,7 +837,7 @@ graph bar,
 </div>
 <div id="y-axis-as-percent-within-group-and-in-plot-legend" class="section level2">
 <h2>Y-axis as Percent within Group and In Plot Legend</h2>
-<p><strong>INSERT IMAGE HERE</strong></p>
+<p><img src="images/stata_images/graph9.png" /></p>
 <pre><code>clear all
 set more off
 

@@ -52,7 +52,7 @@ All examples saved as separate templates in `\\COMMONS\commons\code\stata\01_fig
 
 ## Time Series with Legend
 
-**INSERT IMAGE HERE**
+![](./images/stata_images/graph1.png)
 
 Here’s how to set up your data to label lines directly instead of using a legend.
 
@@ -87,7 +87,7 @@ gen label_`var' = "`var'" if _n==_N
 
 Your data will now look like this:
 
-**INSERT IMAGE HERE**
+![](./images/stata_images/graphX.png)
 
 1. Now graph the data using twoway connected instead of twoway line, setting msize(0) to remove the markers you’d normally see in a scatter plot, and using mlab() to label your y-variables.
 
@@ -162,7 +162,7 @@ twoway connected Toyota Ford Chevy Fiat yearmonth,
 
 ## Scatter Plots
 
-**INSERT IMAGE HERE**
+![](./images/stata_images/graph3.png)
 ```
 clear all
 set more off
@@ -220,7 +220,7 @@ twoway scatter Toyota Ford Chevy Fiat yearmonth
 
 ## Histograms
 
-**INSERT IMAGE HERE**
+![](./images/stata_images/graph4.png)
 
 ```
 clear all
@@ -285,7 +285,7 @@ twoway hist wage,
 
 ## Categorical Variables
 
-**INSERT IMAGE HERE**
+![](./images/stata_images/graph5.png)
 
 ```
 clear all
@@ -342,7 +342,7 @@ graph bar (sum)
 
 ## Categorical, Horiztonal
 
-**INSERT IMAGE HERE**
+![](./images/stata_images/graph6.png)
 
 ```
 clear all
@@ -401,7 +401,7 @@ graph hbar (sum)
 ```
 ## Two-way Dist, Y-Axis count with Reference
 
-**INSERT IMAGE HERE**
+![](./images/stata_images/graph7.png)
 
 ```
 clear all
@@ -468,7 +468,7 @@ graph bar (count),
 
 ## Y-axis as Percent within Sample
 
-**INSERT IMAGE HERE**
+![](./images/stata_images/graph8.png)
 
 ```
 clear all
@@ -524,7 +524,7 @@ graph bar,
 
 ## Y-axis as Percent within Group and In Plot Legend
 
-**INSERT IMAGE HERE**
+![](./images/stata_images/graph9.png)
 
 ```
 clear all
